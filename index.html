@@ -87,6 +87,9 @@ section{padding:30px 0 8px}
 .combo{margin-top:14px;padding:14px 16px;border-radius:16px;border:1px dashed var(--gold);display:flex;justify-content:space-between;gap:12px;align-items:center}
 .combo b{font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:15px}
 .combo p{margin:2px 0 0;font-size:14px;color:var(--mut)}
+.extras{margin-top:14px;padding:14px 16px;border-radius:16px;border:1px dashed var(--gold)}
+.extras b{display:block;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:14px;margin-bottom:6px}
+.ex{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:14px;color:var(--mut)}
 .build{background:var(--card);border-radius:22px;padding:16px}
 .step{padding:12px 0;border-bottom:1px solid var(--line)}
 .step:last-of-type{border-bottom:0}
@@ -172,7 +175,8 @@ const IMG={"margherita": "data:image/webp;base64,UklGRnppAABXRUJQVlA4WAoAAAAQAAA
 const L=['fr','nl','en','tr'];
 const UI={
  dinner:['Dîner','Diner','Dinner','Akşam yemeği'],
- dessert:['Desserts','Desserts','Desserts','Tatlılar'],
+ dessert:['Desserts & café','Desserts & koffie','Desserts & café','Tatlı & kahve'],
+ extras:['Extras','Extra’s','Extras','Ekstralar'],
  search:['Rechercher un plat','Zoek een gerecht','Search a dish','Yemek ara'],
  none:['Aucun plat trouvé.','Geen gerecht gevonden.','No dish found.','Sonuç bulunamadı.'],
  tag:['Plus qu’un repas. Une famille.','Meer dan een maaltijd. Een familie.','More than a meal. A family.','Bir yemekten fazlası. Bir aile.'],
@@ -272,7 +276,23 @@ pain perdu|wentelteefje|French toast|pain perdu
 frites|frietjes|fries|patates kızartması
 panini au choix|panini naar keuze|panini of your choice|seçtiğiniz panini
 soft au choix|frisdrank naar keuze|soft drink of your choice|seçtiğiniz meşrubat
-salade|salade|salad|salata`.split('\n').forEach(r=>{const a=r.split('|');D[a[0]]=a});
+salade|sla|lettuce|yeşil salata
+tomates|tomaten|tomatoes|domates
+croûtons|croutons|croutons|kıtır ekmek
+sauce caesar|caesarsaus|Caesar dressing|sezar sos
+roquette|rucola|rocket|roka
+sésame|sesam|sesame|susam
+purée de mangue|mangopuree|mango purée|mango püresi
+yaourt grec|Griekse yoghurt|Greek yoghurt|süzme yoğurt
+granola|granola|granola|granola
+miel|honing|honey|bal
+lait de coco|kokosmelk|coconut milk|hindistan cevizi sütü
+fruits de la passion|passievrucht|passion fruit|çarkıfelek meyvesi
+coco râpé|geraspte kokos|desiccated coconut|rendelenmiş hindistan cevizi
+sirop vanille|vanillesiroop|vanilla syrup|vanilya şurubu
+sirop caramel|karamelsiroop|caramel syrup|karamel şurubu
+sirop noisette|hazelnootsiroop|hazelnut syrup|fındık şurubu
+chantilly|slagroom|whipped cream|krem şanti`.split('\n').forEach(r=>{const a=r.split('|');D[a[0]]=a});
 const SEC={
  entrees:['Entrées','Voorgerechten','Starters','Başlangıçlar'],
  salades:['Salades','Salades','Salads','Salatalar'],
@@ -286,7 +306,10 @@ const SEC={
  kids:['Menu enfant','Kindermenu','Kids’ menu','Çocuk menüsü'],
  sign:['Signatures','Signatures','Signatures','İmza tatlılar'],
  build:['Composez votre dessert','Stel je dessert samen','Build your dessert','Tatlını kendin yap'],
- classic:['Desserts','Desserts','Desserts','Klasik tatlılar']
+ classic:['Desserts','Desserts','Desserts','Klasik tatlılar'],
+ bowls:['Bowls','Bowls','Bowls','Bowl’lar'],
+ iced:['Cafés glacés','IJskoffie','Iced coffee','Soğuk kahveler'],
+ sale:['Gourmand salé','Hartige snacks','Savoury bites','Tuzlu lezzetler']
 };
 const NOTE={
  plats:['Servi avec légumes sautés et riz, penne ou frites au choix','Geserveerd met gewokte groenten en rijst, penne of frietjes naar keuze','Served with sautéed vegetables and rice, penne or fries','Sote sebze ve tercihen pilav, penne veya patates kızartmasıyla'],
@@ -300,8 +323,8 @@ const DIN=[
  {id:'entrees',lay:'list',items:[S('Harira',5),S('Bisara',5),S('Scampis diabolo',10),S('Scampis à l’ail',9)]},
  {id:'salades',lay:'list',items:[
   S('Salade niçoise',12,'laitue, concombre, tomates cerises, oignons rouges, haricots verts, maïs, thon, œuf dur'),
-  S('Salade César',12,'laitue, concombre, tomates cerises, oignons rouges, poulet caramélisé, maïs, œuf dur, olives, parmesan'),
-  S('Scampis burrata',12,'laitue, concombre, tomates cerises, oignons rouges, poulet caramélisé, maïs, œuf dur, olives, parmesan','burrata'),
+  S('Salade César',12,'salade, tomates, poulet, parmesan, croûtons, sauce caesar'),
+  S('Salade burrata & mangue',12,'salade, roquette, tomates cerises, sésame, purée de mangue, fraises','burrata'),
   S('Salade Breaking',15,'laitue, concombre, tomates cerises, oignons rouges, poulet caramélisé, maïs, œuf dur, olives, parmesan')]},
  {id:'plats',lay:'list',items:[S('Escalope de poulet grillée',15,'','escalope'),S('Escalope de poulet gratinée',16,'','escalope'),S('Escalope de poulet panée',15),S('Steak de veau grillé',17,'','steak'),S('Steak de veau gratiné',18,'','steak')]},
  {id:'pates',lay:'grid',items:[
@@ -322,7 +345,7 @@ const DIN=[
   S('Burger chicken',12,'escalope de poulet, sauce maison, laitue, tomate, oignons rouges, cheddar'),
   S('Burger beef',12.9,'viande hachée, sauce maison, laitue, tomate, oignons rouges, cheddar','burger'),
   S('Burger crispy',12.9,'tenders, sauce spéciale, laitue, tomate, oignons frits, cheddar')]},
- {id:'texmex',lay:'list',items:[S('Pain à l’ail',6.5,'huile aromatique à l’ail, mozzarella'),S('Nuggets · 6 pièces',8.5),S('Chicken wings · 6 pièces',9.5,'','wings'),S('Tenders · 5 pièces',10.5,'','tenders'),S('Frites',2.5)]},
+ {id:'texmex',lay:'list',items:[S('Pain à l’ail',6.5,'huile aromatique à l’ail, mozzarella'),S('Nuggets · 6 pièces',8.5),S('Chicken wings · 6 pièces',9.5,'','wings'),S('Tenders · 5 pièces',9.9,'','tenders'),S('Frites',3.5)]},
  {id:'couscous',lay:'list',days:[5,6],items:[S('Couscous poulet',14),S('Couscous viande',17),S('Couscous végétarien',12),S('Tajine de poulet & légumes',13.5),S('Tajine de poulet & olives',12.5,'','tajine_olives'),S('Tajine de viande & légumes',17.5),S('Tajine de viande aux pruneaux',16.5,'','tajine_pruneaux'),S('Tajine de kefta',12)]},
  {id:'kids',lay:'list',items:[S('Pâtes bolognaise',8.5),S('Pâtes poulet champignons',8.5,'','kids_pates'),S('Cheese burger',8.5)]}
 ];
@@ -332,7 +355,11 @@ const DES=[
   S('Gourmande',11.9,'fraise, banane, kiwi, myrtilles, caramel beurre salé, vanille','crepekiwi'),S('Banana confort',10.9,'spéculoos, banane, coulis de spéculoos','banana'),S('Cocoello',9.9,'chocolat, noix de coco, raffaello'),
   S('Coco blanco',11.9,'chocolat blanc, bueno white, noix de coco'),S('Rougissimo',9.9,'coulis de fruits rouges, chocolat blanc, noisettes','rougissimo'),S('Choco crunch',9.9,'chocolat, cookies, chocolat blanc'),S('Fit boost',10.9,'chocolat blanc, banane, avoine')]},
  {id:'build',lay:'build'},
- {id:'classic',lay:'list',items:[S('Crème brûlée',5.9,'','brulee'),S('Tiramisu',4.9,'','tiramisu'),S('Tarte du jour',6.9),S('Moelleux au chocolat',5.9,'','moelleux'),S('Cup Dubaï',7.9),S('Salade de fruits',8.9)]}
+ {id:'classic',lay:'list',items:[S('Crème brûlée',5.9,'','brulee'),S('Tiramisu',4.9,'','tiramisu'),S('Tarte du jour',6.9),S('Moelleux au chocolat',5.9,'','moelleux'),S('Cup Dubaï',7.9),S('Salade de fruits',8.9)]},
+ {id:'bowls',lay:'list',items:[S('Pop bowl',null,'fraises, banane, myrtilles, kiwi, yaourt grec, granola, miel'),S('Mango tropical',null,'mangue, ananas, banane, lait de coco, kiwi, fruits de la passion, granola, coco râpé')]},
+ {id:'iced',lay:'list',items:[S('Ice americano',4),S('Ice latte',4.5),S('Ice matcha',5)],
+  extras:[['sirop vanille, sirop caramel, sirop noisette',1],['chantilly',0.5],['purée de mangue',1.5]]},
+ {id:'sale',lay:'list',items:[S('Frites',3.5),S('Panini pesto',6.9),S('Panini poulet',7.9,'','panini'),S('Panini kefta',7.9),S('Tenders',9.9,'','tenders'),S('Pâtes poulet',10.9,'','p_poulet'),S('Pâtes 4 fromages',10.9,'','p_4f'),S('Pâtes bolognaise',10.9,'','p_bolo')]}
 ];
 const BUILD=[
  {k:'base',one:true,p:4,t:['Base','Basis','Base','Taban'],o:'crêpe, bubble cup, gaufre, pancake, pain perdu'},
@@ -350,7 +377,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const tr=w=>{const a=D[w.toLowerCase()];return a?a[li]:w};
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const desc=it=>it.d.map(tr).join(' · ');
-const eur=p=>{const s=p.toFixed(2);return(li===2?s:s.replace('.',','))+' €'};
+const eur=p=>{if(p==null)return '';const s=p.toFixed(2);return(li===2?s:s.replace('.',','))+' €'};
 const day=new Date().getDay();
 const SQ=['brulee','tiramisu','moelleux'];
 const svgI='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5" stroke-linecap="round"/></svg>';
@@ -380,7 +407,8 @@ function render(){
   const idx=it=>s.items.indexOf(it);
   const body=s.lay==='build'?builder():s.lay==='grid'?`<div class="grid">${items.map(it=>card(it,si,idx(it))).join('')}</div>`:`<div class="list">${items.map(it=>row(it,si,idx(it))).join('')}</div>`;
   const combo=s.combo&&!k?`<div class="combo"><div><b>${s.combo.n[li]}</b><p>${esc(cap(s.combo.d.split(', ').map(tr).join(' + ')))}</p></div><span class="price">${eur(s.combo.p)}</span></div>`:'';
-  html+=`<section id="${s.id}" class="${off?'off':''}"><div class="sh"><h2>${SEC[s.id][li]}</h2><div class="orn"><i></i><b></b><i></i></div>${note}${days}</div>${body}${combo}</section>`;
+  const ex=s.extras&&!k?`<div class="extras"><b>${UI.extras[li]}</b>${s.extras.map(([o,p])=>`<div class="ex"><span>${esc(o.split(', ').map(w=>cap(tr(w))).join(' · '))}</span><span class="price">+ ${eur(p)}</span></div>`).join('')}</div>`:'';
+  html+=`<section id="${s.id}" class="${off?'off':''}"><div class="sh"><h2>${SEC[s.id][li]}</h2><div class="orn"><i></i><b></b><i></i></div>${note}${days}</div>${body}${combo}${ex}</section>`;
  });
  $('#main').innerHTML=n?html:`<p class="empty">${UI.none[li]}</p>`;
  $('#chips').innerHTML=ss.filter(s=>document.getElementById(s.id)).map(s=>`<a href="#${s.id}" data-id="${s.id}">${SEC[s.id][li]}</a>`).join('');
